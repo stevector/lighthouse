@@ -14,7 +14,7 @@ import {GetValidOutputOptions, OutputMode} from './printer';
 export interface Flags {
   skipAutolaunch: boolean, port: number, selectChrome: boolean, chromeFlags: string, output: any,
       outputPath: string, interactive: boolean, saveArtifacts: boolean, saveAssets: boolean,
-      view: boolean, maxWaitForLoad: number
+      view: boolean, maxWaitForLoad: number, enableErrorReporting: boolean
 }
 
 export function getFlags() {
@@ -56,6 +56,7 @@ export function getFlags() {
           ],
           'Configuration:')
       .describe({
+        'enable-error-reporting': 'Enables error reporting (on by default)',
         'disable-storage-reset':
             'Disable clearing the browser cache and other storage APIs before a run',
         'disable-device-emulation': 'Disable Nexus 5X emulation',
@@ -102,6 +103,7 @@ Example: --output-path=./lighthouse-results.html`,
 
       // default values
       .default('chrome-flags', '')
+      .default('enable-error-reporting', true)
       .default('disable-cpu-throttling', false)
       .default('output', GetValidOutputOptions()[OutputMode.domhtml])
       .default('port', 0)

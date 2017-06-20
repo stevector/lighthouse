@@ -7,6 +7,7 @@
 
 const Audit = require('../audit');
 const Formatter = require('../../report/formatter');
+const Sentry = require('../../lib/sentry');
 
 const KB_IN_BYTES = 1024;
 
@@ -107,6 +108,14 @@ class UnusedBytes extends Audit {
 
     const v1TableHeadings = Audit.makeV1TableHeadings(result.headings);
     const v2TableDetails = Audit.makeV2TableDetails(result.headings, results);
+
+    if (debugString) {
+      // Use captureException to preserve the stack and take advantage of Sentry grouping
+      Sentry.captureException(new Error(debugString), {
+        tags: {audit: this.meta.name},
+        level: 'warning',
+      });
+    }
 
     return {
       debugString,

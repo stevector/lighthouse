@@ -14,6 +14,7 @@ const log = require('./lib/log');
 const fs = require('fs');
 const path = require('path');
 const URL = require('./lib/url-shim');
+const Sentry = require('./lib/sentry');
 
 class Runner {
   static run(connection, opts) {
@@ -35,6 +36,13 @@ class Runner {
       const err = new Error('The url provided should have a proper protocol and hostname.');
       return Promise.reject(err);
     }
+
+    const sentryContext = Sentry.init(opts);
+    Sentry.captureBreadcrumb({
+      message: 'Run started',
+      category: 'lifecycle',
+      data: sentryContext,
+    });
 
     // If the URL isn't https and is also not localhost complain to the user.
     if (parsedURL.protocol !== 'https:' && parsedURL.hostname !== 'localhost') {
@@ -149,6 +157,11 @@ class Runner {
           reportCategories,
           reportGroups: config.groups,
         };
+      })
+      .catch(err => {
+        return Sentry.captureException(err).then(() => {
+          throw err;
+        });
       });
 
     return run;
@@ -188,8 +201,10 @@ class Runner {
           const artifactError = artifacts[artifactName];
           log.warn('Runner', `${artifactName} gatherer, required by audit ${audit.meta.name},` +
             ` encountered an error: ${artifactError.message}`);
-          throw new Error(
+          const error = new Error(
               `Required ${artifactName} gatherer encountered an error: ${artifactError.message}`);
+          error.expected = artifactError.expected;
+          throw error;
         }
       }
       // all required artifacts are in good shape, so we proceed
@@ -202,6 +217,7 @@ class Runner {
         throw err;
       }
 
+      Sentry.captureException(err, {tags: {audit: audit.meta.name}, level: 'warning'});
       // Non-fatal error become error audit result.
       return Audit.generateErrorAuditResult(audit, 'Audit error: ' + err.message);
     }).then(result => {
