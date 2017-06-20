@@ -276,7 +276,7 @@ class Driver {
             }
 
             // If both the data and the url are empty strings, the page had no manifest.
-            return reject('No web app manifest found.');
+            return resolve(null);
           }
 
           resolve(response);

@@ -55,7 +55,7 @@ describe('Manifest gatherer', () => {
     return manifestGather.afterPass({
       driver: {
         getAppManifest() {
-          return Promise.reject('No web app manifest found.');
+          return Promise.resolve(null);
         }
       }
     }).then(artifact => {
