@@ -129,8 +129,6 @@ class GatherRunner {
     return promise.catch(err => {
       if (err.fatal) {
         throw err;
-      } else {
-        Sentry.captureException(err, {tags: {gatherer: gathererName}, level: 'warning'});
       }
     });
   }
@@ -177,7 +175,7 @@ class GatherRunner {
       return chain.then(_ => {
         const artifactPromise = Promise.resolve().then(_ => gatherer.beforePass(options));
         gathererResults[gatherer.name] = [artifactPromise];
-        return GatherRunner.recoverOrThrow(artifactPromise, gatherer.name);
+        return GatherRunner.recoverOrThrow(artifactPromise);
       });
     }, pass);
   }
@@ -216,7 +214,7 @@ class GatherRunner {
       return chain.then(_ => {
         const artifactPromise = Promise.resolve().then(_ => gatherer.pass(options));
         gathererResults[gatherer.name].push(artifactPromise);
-        return GatherRunner.recoverOrThrow(artifactPromise, gatherer.name);
+        return GatherRunner.recoverOrThrow(artifactPromise);
       });
     }, pass);
   }
@@ -273,7 +271,7 @@ class GatherRunner {
         log.log('status', status);
         const artifactPromise = Promise.resolve().then(_ => gatherer.afterPass(options, passData));
         gathererResults[gatherer.name].push(artifactPromise);
-        return GatherRunner.recoverOrThrow(artifactPromise, gatherer.name);
+        return GatherRunner.recoverOrThrow(artifactPromise);
       }).then(_ => {
         log.verbose('statusEnd', status);
       });
@@ -309,6 +307,7 @@ class GatherRunner {
           // To reach this point, all errors are non-fatal, so return err to
           // runner to handle turning it into an error audit.
           artifacts[gathererName] = err;
+          Sentry.captureException(err, {tags: {gatherer: gathererName}, level: 'warning'});
         });
       });
     }, Promise.resolve()).then(_ => {
