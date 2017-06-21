@@ -122,10 +122,9 @@ class GatherRunner {
    * Test any error output from the promise, absorbing non-fatal errors and
    * throwing on fatal ones so that run is stopped.
    * @param {!Promise<*>} promise
-   * @param {string=} gathererName
    * @return {!Promise<*>}
    */
-  static recoverOrThrow(promise, gathererName) {
+  static recoverOrThrow(promise) {
     return promise.catch(err => {
       if (err.fatal) {
         throw err;
