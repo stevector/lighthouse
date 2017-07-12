@@ -19,7 +19,6 @@ const performanceXServer = require('./performance-experiment/server');
 
 // accept noop modules for these, so the real dependency is optional.
 import {opn} from './shim-modules';
-import {askPermission} from './sentry-prompt';
 
 const _RUNTIME_ERROR_CODE = 1;
 const _PROTOCOL_TIMEOUT_EXIT_CODE = 67;
@@ -123,10 +122,6 @@ export async function runLighthouse(
   let launchedChrome: LaunchedChrome|undefined;
 
   try {
-    if (flags.enableErrorReporting) {
-      flags.enableErrorReporting = await askPermission();
-    }
-
     launchedChrome = await getDebuggableChrome(flags);
     flags.port = launchedChrome.port;
     const results = await lighthouse(url, flags, config, environment);

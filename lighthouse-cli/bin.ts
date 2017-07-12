@@ -18,7 +18,7 @@ const pkg = require('../package.json');
 
 // accept noop modules for these, so the real dependency is optional.
 import {updateNotifier} from './shim-modules';
-import {isDev} from './sentry-prompt';
+import {askPermission, isDev} from './sentry-prompt';
 
 
 // Tell user if there's a newer version of LH.
@@ -60,8 +60,12 @@ if (cliFlags.output === Printer.OutputMode[Printer.OutputMode.json] && !cliFlags
   cliFlags.outputPath = 'stdout';
 }
 
-export function run() {
-  return runLighthouse(url, cliFlags, config, {
+export async function run() {
+  if (cliFlags.enableErrorReporting) {
+    cliFlags.enableErrorReporting = await askPermission();
+  }
+
+  return await runLighthouse(url, cliFlags, config, {
     name: 'redacted', // prevent sentry from using hostname
     environment: isDev() ? 'development' : 'production',
     release: pkg.version,
