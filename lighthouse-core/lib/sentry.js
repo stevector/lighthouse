@@ -49,6 +49,8 @@ sentryDelegate.init = function init(opts) {
 
     // Special case captureException to return a Promise so we don't process.exit too early
     sentryDelegate.captureException = (...args) => {
+      if (args[0] && args[0].expected) return Promise.resolve();
+
       return new Promise(resolve => {
         Sentry.captureException(...args, () => resolve());
       });

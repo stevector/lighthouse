@@ -199,11 +199,14 @@ class Runner {
         // have thrown). Output error result on behalf of audit.
         if (artifacts[artifactName] instanceof Error) {
           const artifactError = artifacts[artifactName];
+          Sentry.captureException(artifactError, {tags: {gatherer: artifactName}, level: 'warning'});
           log.warn('Runner', `${artifactName} gatherer, required by audit ${audit.meta.name},` +
             ` encountered an error: ${artifactError.message}`);
+
+          // Create a friendlier display error and mark it as expected to avoid duplicates in Sentry
           const error = new Error(
               `Required ${artifactName} gatherer encountered an error: ${artifactError.message}`);
-          error.expected = artifactError.expected;
+          error.expected = true;
           throw error;
         }
       }

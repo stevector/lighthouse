@@ -9,7 +9,6 @@ const log = require('lighthouse-logger');
 const Audit = require('../audits/audit');
 const URL = require('../lib/url-shim');
 const NetworkRecorder = require('../lib/network-recorder.js');
-const Sentry = require('../lib/sentry');
 
 /**
  * @typedef {!Object<string, !Array<!Promise<*>>>}
@@ -307,7 +306,6 @@ class GatherRunner {
           // To reach this point, all errors are non-fatal, so return err to
           // runner to handle turning it into an error audit.
           artifacts[gathererName] = err;
-          Sentry.captureException(err, {tags: {gatherer: gathererName}, level: 'warning'});
         });
       });
     }, Promise.resolve()).then(_ => {
