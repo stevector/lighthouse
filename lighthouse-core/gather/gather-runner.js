@@ -5,7 +5,7 @@
  */
 'use strict';
 
-const log = require('../lib/log.js');
+const log = require('lighthouse-logger');
 const Audit = require('../audits/audit');
 const URL = require('../lib/url-shim');
 const NetworkRecorder = require('../lib/network-recorder.js');
@@ -102,6 +102,7 @@ class GatherRunner {
       .then(_ => driver.beginEmulation(options.flags))
       .then(_ => driver.enableRuntimeEvents())
       .then(_ => driver.cacheNatives())
+      .then(_ => driver.registerPerformanceObserver())
       .then(_ => driver.dismissJavaScriptDialogs())
       .then(_ => resetStorage && driver.clearDataForOrigin(options.url))
       .then(_ => gathererResults.UserAgent = [driver.getUserAgent()]);

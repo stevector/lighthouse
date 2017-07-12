@@ -6,8 +6,8 @@
 'use strict';
 
 const Audit = require('./audit');
-const Formatter = require('../report/formatter');
 const URL = require('../lib/url-shim');
+const Util = require('../report/v2/renderer/util');
 
 const SECURE_SCHEMES = ['data', 'https', 'wss', 'blob', 'chrome', 'chrome-extension'];
 const SECURE_DOMAINS = ['localhost', '127.0.0.1'];
@@ -21,6 +21,7 @@ class HTTPS extends Audit {
       category: 'Security',
       name: 'is-on-https',
       description: 'Uses HTTPS',
+      failureDescription: 'Does not use HTTPS',
       helpText: 'All sites should be protected with HTTPS, even ones that don\'t handle ' +
           'sensitive data. HTTPS prevents intruders from tampering with or passively listening ' +
           'in on the communications between your app and your users, and is a prerequisite for ' +
@@ -35,7 +36,9 @@ class HTTPS extends Audit {
    * @return {boolean}
    */
   static isSecureRecord(record) {
-    return SECURE_SCHEMES.includes(record.scheme) || SECURE_DOMAINS.includes(record.domain);
+    return SECURE_SCHEMES.includes(record.scheme) ||
+           SECURE_SCHEMES.includes(record.protocol) ||
+           SECURE_DOMAINS.includes(record.domain);
   }
 
   /**
@@ -51,7 +54,7 @@ class HTTPS extends Audit {
 
       let displayValue = '';
       if (insecureRecords.length > 1) {
-        displayValue = `${insecureRecords.length} insecure requests found`;
+        displayValue = `${Util.formatNumber(insecureRecords.length)} insecure requests found`;
       } else if (insecureRecords.length === 1) {
         displayValue = `${insecureRecords.length} insecure request found`;
       }
@@ -60,7 +63,6 @@ class HTTPS extends Audit {
         rawValue: insecureRecords.length === 0,
         displayValue,
         extendedInfo: {
-          formatter: Formatter.SUPPORTED_FORMATS.URL_LIST,
           value: insecureRecords
         },
         details: {

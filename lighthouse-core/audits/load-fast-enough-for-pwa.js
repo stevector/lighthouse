@@ -14,7 +14,6 @@
 const Audit = require('./audit');
 const URL = require('../lib/url-shim');
 const Emulation = require('../lib/emulation');
-const Formatter = require('../report/formatter');
 const Sentry = require('../lib/sentry');
 const Util = require('../report/v2/renderer/util.js');
 
@@ -33,7 +32,9 @@ class LoadFastEnough4Pwa extends Audit {
       category: 'PWA',
       name: 'load-fast-enough-for-pwa',
       description: 'Page load is fast enough on 3G',
-      helpText: 'Satisfied if First Interactive is less than 10 seconds, as defined by the [PWA Baseline Checklist](https://developers.google.com/web/progressive-web-apps/checklist). Network throttling is required (specifically: RTT latencies >= 150 RTT are expected).',
+      failureDescription: 'Page load is not fast enough on 3G',
+      helpText: 'A fast page load over a 3G network ensures a good mobile user experience. ' +
+          '[Learn more](https://developers.google.com/web/tools/lighthouse/audits/fast-3g).',
       requiredArtifacts: ['traces', 'devtoolsLogs']
     };
   }
@@ -84,7 +85,7 @@ class LoadFastEnough4Pwa extends Audit {
       const areLatenciesAll3G = firstRequestLatencies.every(val => val.latency > latency3gMin);
       firstRequestLatencies = firstRequestLatencies.map(item => ({
         url: item.url,
-        latency: item.latency.toLocaleString(undefined, {maximumFractionDigits: 2})
+        latency: Util.formatNumber(item.latency, 2)
       }));
 
       const trace = artifacts.traces[Audit.DEFAULT_PASS];
@@ -93,11 +94,10 @@ class LoadFastEnough4Pwa extends Audit {
         const isFast = timeToFirstInteractive < MAXIMUM_TTFI;
 
         const extendedInfo = {
-          formatter: Formatter.SUPPORTED_FORMATS.NULL,
           value: {areLatenciesAll3G, firstRequestLatencies, isFast, timeToFirstInteractive}
         };
 
-        const details = Audit.makeV2TableDetails([
+        const details = Audit.makeTableDetails([
           {key: 'url', itemType: 'url', text: 'URL'},
           {key: 'latency', itemType: 'text', text: 'Latency (ms)'},
         ], firstRequestLatencies);

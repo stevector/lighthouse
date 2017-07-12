@@ -9,7 +9,7 @@
  * An enumeration of acceptable output modes:
  *   'json': JSON formatted results
  *   'html': An HTML report
- *   'domhtml': An HTML report rendered client-side with DOM elements
+ *   'domhtml': Alias for 'html' report
  */
 enum OutputMode {
   json,
@@ -23,7 +23,7 @@ import {Results} from './types/types';
 
 const fs = require('fs');
 const ReportGeneratorV2 = require('../lighthouse-core/report/v2/report-generator');
-const log = require('../lighthouse-core/lib/log');
+const log = require('lighthouse-logger');
 
 
 /**

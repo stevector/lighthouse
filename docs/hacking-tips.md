@@ -46,21 +46,31 @@ const html = new ReportGeneratorV2().generateReportHtml(results);
 console.log(html);
 ```
 
-## Iterating on the v1 report
+## Debugging Travis via docker image
+
+You can do a local docker image install of Travis to better inspect a travis build:
+
+* [How to run travis-ci locally - Stack Overflow](https://stackoverflow.com/questions/21053657/how-to-run-travis-ci-locally)
+* [Common Build Problems - Travis CI](https://docs.travis-ci.com/user/common-build-problems/#Troubleshooting-Locally-in-a-Docker-Image)
 
 ```sh
-node generate_report.js > temp.report.html; open temp.report.html
+docker run --name travis-debug -dit travisci/ci-garnet:packer-1496954857 /sbin/init
+docker exec -it travis-debug bash -l
+
+# once inside, change to travis user, rather than root
+su - travis
+
+# once on the travis user, make a clone of lighthouse and play around
 ```
 
-```js
-// generate_report.js
-'use strict';
+```sh
+# you may also want to mount a local folder into your docker instance. 
+# This will mount your local machines's ~/temp/trav folder into the container's /home/travis/mountpoint folder
+docker run -v $HOME/temp/trav:/home/travis/mountpoint --name travis-debug -dit travisci/ci-garnet:packer-1496954857 /sbin/init
 
-const ReportGenerator = require('./lighthouse-core/report/report-generator');
-const results = require('./lighthouse-core/test/results/sample.json');
-const reportGenerator = new ReportGenerator();
-const html = reportGenerator.generateHTML(results, 'devtools');
-
-console.log(html);
 ```
+
+You can then run the travis commands (e.g. `travis compile`) to install an environment and run the build script:
+
+[travis-ci/travis-build: .travis.yml =&gt; build.sh converter](https://github.com/travis-ci/travis-build#invocation)
 
