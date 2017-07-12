@@ -5,7 +5,7 @@
  */
 'use strict';
 
-const log = require('./log');
+const log = require('lighthouse-logger');
 
 // eslint-disable-next-line max-len
 const SENTRY_URL = 'https://a6bb0da87ee048cc9ae2a345fc09ab2e:63a7029f46f74265981b7e005e0f69f8@sentry.io/174697';

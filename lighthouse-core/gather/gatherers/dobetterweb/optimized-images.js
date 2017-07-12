@@ -129,7 +129,7 @@ class OptimizedImages extends Gatherer {
         return this.calculateImageStats(driver, record)
           .catch(err => {
             Sentry.captureException(err, {
-              tags: {gatherer: 'optimized-images'},
+              tags: {gatherer: 'OptimizedImages'},
               extra: {imageUrl: URL.elideDataURI(record.url)},
               level: 'warning',
             });

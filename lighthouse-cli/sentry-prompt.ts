@@ -3,15 +3,14 @@ import {join as joinPath} from 'path';
 
 import {Configstore, inquirer} from './shim-modules';
 
-const log = require('../lighthouse-core/lib/log');
+const log = require('lighthouse-logger');
 
 const MAXIMUM_WAIT_TIME = 20 * 1000;
 
 const MESSAGE = [
-  'Lighthouse would like to report back any errors that might occur while auditing. \n  ',
-  'Information such as the URL you are auditing, its subresources, your operating system, Chrome, ',
-  'and Lighthouse versions may be recorded. Would you be willing to have Lighthouse automatically ',
-  'report this information to the team to aid in improving the product?',
+  `${log.reset}Lighthouse is requesting permission to anonymoously report back runtime exceptions.\n  `,
+  `${log.reset}This can include data such as the test URL, its subresources, your OS, Chrome version, and Lighthouse version.\n  `,
+  `May ${log.green}Lighthouse${log.reset} ${log.bold}report this data to aid in improving the tool?`,
 ].join('');
 
 async function prompt() {
