@@ -59,7 +59,7 @@ export function getFlags(manualArgv?: string) {
           'Configuration:')
       .describe({
         'enable-error-reporting':
-            'Enables error reporting (prompts once when enabled, setting this flag to false will force off error reporting).',
+            'Enables error reporting (prompts once by default, setting this flag will force error reporting to that state).',
         'disable-storage-reset':
             'Disable clearing the browser cache and other storage APIs before a run',
         'disable-device-emulation': 'Disable Nexus 5X emulation',
@@ -106,7 +106,6 @@ Example: --output-path=./lighthouse-results.html`,
 
       // default values
       .default('chrome-flags', '')
-      .default('enable-error-reporting', true)
       .default('disable-cpu-throttling', false)
       .default('output', GetValidOutputOptions()[OutputMode.domhtml])
       .default('port', 0)

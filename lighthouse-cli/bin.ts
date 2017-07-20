@@ -65,7 +65,7 @@ if (cliFlags.output === Printer.OutputMode[Printer.OutputMode.json] && !cliFlags
 }
 
 export async function run() {
-  if (cliFlags.enableErrorReporting) {
+  if (typeof cliFlags.enableErrorReporting === 'undefined') {
     cliFlags.enableErrorReporting = await askPermission();
   }
 
