@@ -5,6 +5,7 @@
  */
 'use strict';
 
+import {existsSync} from 'fs';
 import * as path from 'path';
 
 import * as Commands from './commands/commands';
@@ -18,8 +19,11 @@ const pkg = require('../package.json');
 
 // accept noop modules for these, so the real dependency is optional.
 import {updateNotifier} from './shim-modules';
-import {askPermission, isDev} from './sentry-prompt';
+import {askPermission} from './sentry-prompt';
 
+function isDev() {
+  return existsSync(path.join(__dirname, '../.git'));
+}
 
 // Tell user if there's a newer version of LH.
 updateNotifier({pkg}).notify();

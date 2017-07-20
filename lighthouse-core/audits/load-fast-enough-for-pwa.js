@@ -117,6 +117,8 @@ class LoadFastEnough4Pwa extends Audit {
               sentryContext.extra.networkThrottling;
 
           if (hadThrottlingEnabled) {
+            // Track these instances in Sentry since there should be no requests that are fast when
+            // throttling is enabled, and it's likely a throttling bug we should look into.
             const violatingLatency = firstRequestLatencies
                 .find(item => Number(item.latency) < latency3gMin);
             Sentry.captureMessage('Network request latencies were not realistic', {

@@ -109,7 +109,8 @@ class UnusedBytes extends Audit {
     const tableDetails = Audit.makeTableDetails(result.headings, results);
 
     if (debugString) {
-      // Use captureException to preserve the stack and take advantage of Sentry grouping
+      // Track these with Sentry since we don't want to fail the entire audit for a single image failure.
+      // Use captureException to preserve the stack and take advantage of Sentry grouping.
       Sentry.captureException(new Error(debugString), {
         tags: {audit: this.meta.name},
         level: 'warning',

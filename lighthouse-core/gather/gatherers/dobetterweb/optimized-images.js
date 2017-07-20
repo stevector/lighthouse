@@ -128,6 +128,8 @@ class OptimizedImages extends Gatherer {
       return promise.then(results => {
         return this.calculateImageStats(driver, record)
           .catch(err => {
+            // Track this with Sentry since these errors aren't surfaced anywhere else, but we don't
+            // want to tank the entire run due to a single image.
             Sentry.captureException(err, {
               tags: {gatherer: 'OptimizedImages'},
               extra: {imageUrl: URL.elideDataURI(record.url)},

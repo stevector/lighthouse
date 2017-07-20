@@ -59,7 +59,7 @@ export function getFlags(manualArgv?: string) {
           'Configuration:')
       .describe({
         'enable-error-reporting':
-            'Enables error reporting (prompts by default, setting this flag to false will force off error reporting).',
+            'Enables error reporting (prompts once when enabled, setting this flag to false will force off error reporting).',
         'disable-storage-reset':
             'Disable clearing the browser cache and other storage APIs before a run',
         'disable-device-emulation': 'Disable Nexus 5X emulation',
