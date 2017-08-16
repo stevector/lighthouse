@@ -1,6 +1,6 @@
 {
   "name": "lighthouse",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "description": "Lighthouse",
   "main": "./lighthouse-core/index.js",
   "bin": {
@@ -81,7 +81,7 @@
     "jpeg-js": "0.1.2",
     "json-stringify-safe": "5.0.1",
     "lighthouse-logger": "^1.0.0",
-    "metaviewport-parser": "0.0.1",
+    "metaviewport-parser": "0.1.0",
     "mkdirp": "0.5.1",
     "opn": "4.0.2",
     "raven": "^2.1.0",
