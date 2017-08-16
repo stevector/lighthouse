@@ -66,6 +66,7 @@ Configuration:
   --hostname                     The hostname to use for the debugging protocol.                                                [default: localhost]
   --max-wait-for-load            The timeout (in milliseconds) to wait before the page is considered done loading and the run should continue.
                                  WARNING: Very high values can lead to large traces and instability                                 [default: 25000]
+  --enable-error-reporting       Enables error reporting (prompts once by default, setting this flag will force error reporting to that state).
 
 Output:
   --output       Reporter for the results, supports multiple values                           [choices: "json", "html", "domhtml"] [default: "html"]
@@ -131,6 +132,18 @@ NOTE: specifying an output path with multiple formats ignores your specified ext
 `lighthouse --save-artifacts` generates
 * `./<HOST>_<DATE>.report.html`
 * `./<HOST>_<DATE>.artifacts.log`
+
+#### Notes on Error Reporting
+
+The first time you run the CLI you will be prompted with a message asking you if Lighthouse can anonymously report runtime exceptions.
+
+```
+? Lighthouse is requesting permission to anonymously report back runtime exceptions.
+  This can include data such as the test URL, its subresources, your OS, Chrome version, and Lighthouse version.
+  May Lighthouse report this data to aid in improving the tool? (y/N)
+```
+
+The Lighthouse team uses this information to detect new bugs and avoid regressions. Your response to this prompt will be saved to your home directory `~/.config/configstore/lighthouse.json` and used on future runs. If you use the flag `--enable-error-reporting`, error reporting will be on for the run regardless of your previous response. If you use the flag `--no-enable-error-reporting`, fail to answer the prompt, or have the `CI` environment variable set, error reporting will be off for the run.
 
 ## Viewing a report
 

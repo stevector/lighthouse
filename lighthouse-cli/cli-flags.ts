@@ -54,7 +54,7 @@ export function getFlags(manualArgv?: string) {
           [
             'save-assets', 'save-artifacts', 'list-all-audits', 'list-trace-categories',
             'additional-trace-categories', 'config-path', 'chrome-flags', 'perf', 'port',
-            'hostname', 'max-wait-for-load'
+            'hostname', 'max-wait-for-load', 'enable-error-reporting'
           ],
           'Configuration:')
       .describe({
