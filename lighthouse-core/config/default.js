@@ -72,6 +72,7 @@ module.exports = {
     'speed-index-metric',
     'screenshot-thumbnails',
     'estimated-input-latency',
+    'error-logs',
     // 'time-to-firstbyte',
     'first-interactive',
     'consistently-interactive',
@@ -237,7 +238,6 @@ module.exports = {
         {id: 'dom-size', weight: 0, group: 'perf-info'},
         {id: 'critical-request-chains', weight: 0, group: 'perf-info'},
         {id: 'user-timings', weight: 0, group: 'perf-info'},
-
         {id: 'screenshot-thumbnails', weight: 0},
       ]
     },
@@ -299,6 +299,7 @@ module.exports = {
         {id: 'deprecations', weight: 1},
         {id: 'manifest-short-name-length', weight: 1},
         {id: 'password-inputs-can-be-pasted-into', weight: 1},
+        {id: 'error-logs', weight: 1},
       ]
     }
   }
