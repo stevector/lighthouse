@@ -1,6 +1,6 @@
 {
   "name": "lighthouse",
-  "version": "2.4.0",
+  "version": "2.5.1",
   "description": "Lighthouse",
   "main": "./lighthouse-core/index.js",
   "bin": {
@@ -25,10 +25,10 @@
     "build-viewer": "cd ./lighthouse-viewer && yarn build",
     "clean": "rimraf *.report.html *.report.dom.html *.report.json *.screenshots.html *.devtoolslog.json *.trace.json || true",
     "lint": "[ \"$CI\" = true ] && eslint --quiet -f codeframe . || eslint .",
-    "smoke": "bash lighthouse-cli/test/smokehouse/offline-local/run-tests.sh && bash lighthouse-cli/test/smokehouse/perf/run-tests.sh && bash lighthouse-cli/test/smokehouse/dobetterweb/run-tests.sh && bash lighthouse-cli/test/smokehouse/byte-efficiency/run-tests.sh && bash lighthouse-cli/test/smokehouse/tricky-ttci/run-tests.sh && bash lighthouse-cli/test/smokehouse/seo/run-tests.sh",
+    "smoke": "bash lighthouse-cli/test/smokehouse/offline-local/run-tests.sh && bash lighthouse-cli/test/smokehouse/perf/run-tests.sh && bash lighthouse-cli/test/smokehouse/dobetterweb/run-tests.sh && bash lighthouse-cli/test/smokehouse/byte-efficiency/run-tests.sh && bash lighthouse-cli/test/smokehouse/tricky-ttci/run-tests.sh && bash lighthouse-cli/test/smokehouse/seo/run-tests.sh && bash lighthouse-cli/test/smokehouse/redirects/run-tests.sh",
     "coverage": "istanbul cover -x \"**/third_party/**\" _mocha -- $(find */test -name '*-test.js') --timeout 10000 --reporter progress --report lcovonly",
     "start": "node ./lighthouse-cli/index.js",
-    "test": "yarn lint --silent && yarn unit && yarn closure && yarn test-cli-formatting",
+    "test": "yarn lint --quiet && yarn unit && yarn closure && yarn test-cli-formatting",
     "unit-core": "bash lighthouse-core/scripts/run-mocha.sh --core",
     "unit-cli": "bash lighthouse-core/scripts/run-mocha.sh --cli",
     "unit-viewer": "bash lighthouse-core/scripts/run-mocha.sh --viewer",
@@ -70,7 +70,7 @@
   "dependencies": {
     "axe-core": "2.4.1",
     "chrome-devtools-frontend": "1.0.422034",
-    "chrome-launcher": "0.8.0",
+    "chrome-launcher": "0.8.1",
     "devtools-timeline-model": "1.1.6",
     "jpeg-js": "0.1.2",
     "js-library-detector": "^4.0.0",
@@ -85,7 +85,8 @@
     "update-notifier": "^2.1.0",
     "whatwg-url": "4.0.0",
     "ws": "1.1.2",
-    "yargs": "3.32.0"
+    "yargs": "3.32.0",
+    "yargs-parser": "7.0.0"
   },
   "repository": "GoogleChrome/lighthouse",
   "keywords": [
