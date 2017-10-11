@@ -222,7 +222,6 @@ module.exports = {
     },
     'performance': {
       name: 'Performance',
-      weight: 1,
       description: 'These encapsulate your app\'s current performance and opportunities to improve it.',
       audits: [
         {id: 'first-meaningful-paint', weight: 5, group: 'perf-metric'},
@@ -248,7 +247,6 @@ module.exports = {
     },
     'accessibility': {
       name: 'Accessibility',
-      weight: 1,
       description: 'These checks highlight opportunities to [improve the accessibility of your app](https://developers.google.com/web/fundamentals/accessibility).',
       audits: [
         {id: 'accesskeys', weight: 1, group: 'a11y-correct-attributes'},
@@ -290,7 +288,6 @@ module.exports = {
     },
     'best-practices': {
       name: 'Best Practices',
-      weight: 1,
       description: 'We\'ve compiled some recommendations for modernizing your web app and avoiding performance pitfalls.',
       audits: [
         {id: 'appcache-manifest', weight: 1},
